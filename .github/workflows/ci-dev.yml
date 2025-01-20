@@ -5,18 +5,13 @@ on:
   push:
     branches: ['dev']
 
-# Defines two custom environment variables for the workflow. These are used for the Container registry domain, and a name for the Docker image that this workflow builds.
-env:
-  REGISTRY: ghcr.io
-  IMAGE_NAME: ${{ github.repository }}
-
-# There is a single job in this workflow. It's configured to run on the latest available version of Ubuntu.
 jobs:
   build-and-push-image:
     runs-on: ubuntu-latest
     # Sets the permissions granted to the `GITHUB_TOKEN` for the actions in this job.
     permissions:
       contents: read
+      contents: write
       packages: write
       attestations: write
       id-token: write
@@ -24,12 +19,14 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          ref: ${{ github.head_ref }}
       - name: Rename file
         run: |
             cd helm
-            cp prod.yaml values.yaml
+            cp dev.yaml values.yaml
             cd ../
-      - name: Push changes # push the output folder to your repo
-        uses: EndBug/add-and-commit@v9
+      - uses: stefanzweifel/git-auto-commit-action@v5
+
 
       
