@@ -1,28 +1,42 @@
-build:
-# The type of runner that the job will run on
-runs-on: ubuntu-latest
+name: ci-prod
+
+# Configures this workflow to run every time a change is pushed to the branch called `release`.
 on:
   push:
     branches: ['main']
 
-# Steps represent a sequence of tasks that will be executed as part of the job
-steps:
-# Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-- uses: actions/checkout@v2
+# Defines two custom environment variables for the workflow. These are used for the Container registry domain, and a name for the Docker image that this workflow builds.
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository }}
 
-# Runs commands using the runners shell
-- name: Rename file
-  run: |
-    cd helm
-    cp prod.yaml values.yaml
-    cd ../
+# There is a single job in this workflow. It's configured to run on the latest available version of Ubuntu.
+jobs:
+  build-and-push-image:
+    runs-on: ubuntu-latest
+    # Sets the permissions granted to the `GITHUB_TOKEN` for the actions in this job.
+    permissions:
+      contents: read
+      packages: write
+      attestations: write
+      id-token: write
+      # 
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Rename file
+        run: |
+            cd helm
+            cp prod.yaml values.yaml
+            cd ../
+      - name: Commit files # transfer the new html files back into the repository
+        run: |
+            git add .
+            git commit -m "Updating the repository GitHub html pages in the docs folder"
+      - name: Push changes # push the output folder to your repo
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          force: true 
 
-- name: Commit files # transfer the new html files back into the repository
-  run: |
-    git add .
-    git commit -m "Updating the repository GitHub html pages in the docs folder"
-- name: Push changes # push the output folder to your repo
-  uses: ad-m/github-push-action@master
-  with:
-    github_token: ${{ secrets.GITHUB_TOKEN }}
-    force: true
+      
