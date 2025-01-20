@@ -1,9 +1,9 @@
-name: ci-dev
+name: ci-prod
 
 # Configures this workflow to run every time a change is pushed to the branch called `release`.
 on:
   push:
-    branches: ['dev']
+    branches: ['main']
 
 jobs:
   build-and-push-image:
@@ -24,7 +24,7 @@ jobs:
       - name: Rename file
         run: |
             cd helm
-            cp dev.yaml values.yaml
+            cp prod.yaml values.yaml
             cd ../
       - uses: stefanzweifel/git-auto-commit-action@v5
 
