@@ -17,4 +17,4 @@ jobs:
     - name: Build the Docker image
       run: docker build . --file Dockerfile --tag site-traiteur-dev:$(date +%s)
     - name: Push the Docker image to GHCR
-      run: docker push ghcr.io/${{ github.repository_owner }}/${{ github.repository_name }}-dev:latest
+      run: docker push ghcr.io/${{ github.repository_owner }}/site-traiteur-dev:latest
