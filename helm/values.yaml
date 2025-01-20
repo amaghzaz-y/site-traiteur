@@ -1,8 +1,0 @@
-replicas: 3
-appName: "site-traiteur"
-namespace: "prod"
-image:
-  name: "site-traiteur"
-  registry: "ghcr.io/amaghzaz-y"
-  version: "prod"
-servicePort: 8000

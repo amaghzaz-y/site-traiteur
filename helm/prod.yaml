@@ -4,5 +4,5 @@ namespace: "prod"
 image:
   name: "site-traiteur"
   registry: "ghcr.io/amaghzaz-y"
-  version: "prod"
+  version: "main"
 servicePort: 8000
