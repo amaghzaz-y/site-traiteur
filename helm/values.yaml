@@ -3,6 +3,6 @@ appName: "site-traiteur"
 namespace: "dev"
 image:
   name: "site-traiteur"
-  registry: "ghcr.io/amaghzaz-y/site-traiteur"
+  registry: "ghcr.io/amaghzaz-y"
   version: "dev"
 servicePort: 8000
